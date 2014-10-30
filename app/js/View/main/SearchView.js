@@ -1,140 +1,15 @@
-/*global Backbone */
-/*global Marionette */
 /*global _ */
 /*global alert */
 
-function objDump(obj) {
-	'use strict';
+var Backbone = require('backbone');
+require('marionette');
 
-	var txt = '';
-	for (var one in obj){
-		txt += one + '=' + obj[one] + '\n';
-	}
-	alert(txt);
-}
+var Utility = require('../../Utility/Utility');
 
-var User = Backbone.Model.extend({
-
-	url: '/users',
-
-	defaults: {
-		'id' : null,
-		'username' : null,
-		'password' : null,
-		'role' : null,
-		'created' : null,
-		'modified' : null,
-	},
-
-	// 独自Sync.
-	// Map from CRUD to HTTP for our default `Backbone.sync` implementation.
-	// var methodMap = {
-	//   'create': 'POST',
-	//   'update': 'PUT',
-	//   'patch':  'PATCH',
-	//   'delete': 'DELETE',
-	//   'read':   'GET'
-	// };
-	sync: function(method, model, options) {
-		'use strict';
-
-		switch(method) {
-			case 'read':	// GET.
-			case 'update':	// PUT.
-			case 'delete':	// DELETE.
-				options.url = model.url + '/' + model.get('id') + '.json';
-				break;
-			default:
-			case 'create':	// POST.
-				options.url = model.url + '.json';
-				break;
-		}
-
-		return Backbone.sync(method, model, options);
-	},
-});
-
-var UserList = Backbone.Collection.extend({
-
-  // Reference to this collection's model.
-  model: User,
-
-  // Save all of the User items under the `'users-backbone'` namespace.
-//    localStorage: new Backbone.LocalStorage('users-backbone'),
-
-  url: '/users',
-
-  parse: function(response/* , xhr */) {
-	'use strict';
-
-	var users = response.users !== undefined ? response.users : response;
-
-    return users;
-  },
-
-  // Filter down the list of all user items that are finished.
-  done: function() {
-	'use strict';
-    return this.where({done: true});
-  },
-
-  // Filter down the list to only user items that are still not finished.
-  remaining: function() {
-	'use strict';
-    return this.where({done: false});
-  },
-
-  // We keep the Users in sequential order, despite being saved by unordered
-  // GUID in the database. This generates the next order number for new items.
-  nextOrder: function() {
-	'use strict';
-    if (!this.length) { return 1; }
-    return this.last().get('order') + 1;
-  },
-
-  // Users are sorted by their original insertion order.
-  comparator: 'id'
-
-});
-
-var TableItemView = Backbone.Marionette.ItemView.extend({
-
-	tagName: 'tr',
-	model: User,
-	template: '#ItemViewTemplate',
-	templateHelpers: function() {
-		'use strict';
-		return {};
-	},
-
-	// ViewとModelのBinding.
-	bindings: {
-		'td#id': 'id',
-		'td#username': 'username',
-		'td#password': 'password',
-		'td#role': 'role',
-		'td#created': 'created',
-		'td#modified': 'modified',
-	},
-
-	initialize: function(/* options */) {
-		'use strict';
-	},
-
-	// View がレンダリングされた後に呼ばれるメソッド。
-	onRender: function() {
-		'use strict';
-	},
-
-	// View がレンダリングされて画面に表示された後に呼ばれるメソッド。
-	onShow: function() {
-		'use strict';
-		this.stickit();
-	},
-});
+var TableItemView = require('./TableItemView');
 
 // 検索View.
-var SearchView  = Marionette.CompositeView.extend({
+module.exports = Backbone.Marionette.CompositeView.extend({
 
 	itemView: TableItemView,
 //	itemViewOptions : function () {		'use strict';	},
@@ -177,9 +52,10 @@ var SearchView  = Marionette.CompositeView.extend({
 	initialize: function(/* options */) {
 		'use strict';
 
-		if (!this.collection) {
-			return;
-		}
+		// templateを追加.
+		var html = require('./template/SearchViewTemplate.html');
+		$('body').append(html);
+
 		// イベント監視.
 		this.collection.on('all', _.bind(function(eventName, a, b/* , c */) {
 
@@ -281,7 +157,7 @@ var SearchView  = Marionette.CompositeView.extend({
 
 			alert(jqXHR.responseText);
 			alert(textStatus);
-			objDump(errorThrown);
+			Utility.objDump(errorThrown);
 		});
 	},
 
@@ -312,7 +188,7 @@ var SearchView  = Marionette.CompositeView.extend({
 
 			alert(jqXHR.responseText);
 			alert(textStatus);
-			objDump(errorThrown);
+			Utility.objDump(errorThrown);
 		});
 	},
 
@@ -365,7 +241,7 @@ var SearchView  = Marionette.CompositeView.extend({
 
 			alert(jqXHR.responseText);
 			alert(textStatus);
-			objDump(errorThrown);
+			Utility.objDump(errorThrown);
 		});
 	},
 
@@ -387,12 +263,12 @@ var SearchView  = Marionette.CompositeView.extend({
 			url: url,
 		}).done(function(json/* , textStatus, jqXHR */) {
 
-			objDump(json);
+			Utility.objDump(json);
 		}).fail(function(jqXHR, textStatus, errorThrown) {
 
 			alert(jqXHR.responseText);
 			alert(textStatus);
-			objDump(errorThrown);
+			Utility.objDump(errorThrown);
 		});
 	},
 
@@ -414,13 +290,13 @@ var SearchView  = Marionette.CompositeView.extend({
 
 			_.each(json, function(value/* , key */) {
 
-				objDump(value);
+				Utility.objDump(value);
 			});
 		}).fail(function(jqXHR, textStatus, errorThrown) {
 
 			alert(jqXHR.responseText);
 			alert(textStatus);
-			objDump(errorThrown);
+			Utility.objDump(errorThrown);
 		});
 	},
 
@@ -440,31 +316,4 @@ var SearchView  = Marionette.CompositeView.extend({
 		
 		$('#sub').on('click', this.onClickSubButton);
 	},
-});
-
-// アプリクラス.
-var app = new Marionette.Application();
-
-app.addRegions({
-  filterRegion: '#filter',
-});
-
-app.addInitializer(function(/* options */){
-	'use strict';
-
-	// 検索部をrender.
-	app.filterRegion.show(new SearchView({collection: new UserList({})}));
-});
-
-app.on('start', function(/* options */){
-	'use strict';
-
-	if (Backbone.history){ Backbone.history.start(); }
-});
-
-$(function(){
-	'use strict';
-
-	// backboneスタート.
-	app.start();
 });

@@ -5,6 +5,12 @@ var gulp = require('gulp');
 
 // load plugins
 var $ = require('gulp-load-plugins')();
+
+var path = require('path');
+var gutil = require("gulp-util");
+var webpack = require("webpack");
+var webpackConfig = require("./webpack.config.js");
+
 require('./js-minify.js')(gulp);
 require('./css-minify.js')(gulp);
 
@@ -68,7 +74,7 @@ gulp.task('clean', function () {
     return gulp.src(['.tmp', 'dist'], { read: false }).pipe($.clean());
 });
 
-gulp.task('build', ['html', 'img', 'fonts', 'extras']);
+gulp.task('build', ['webpack:build', 'img', 'fonts', 'extras']);
 
 gulp.task('default', ['clean'], function () {
     gulp.start('build');
@@ -129,4 +135,19 @@ gulp.task('watch', ['connect', 'serve'], function () {
     gulp.watch('app/js/**/*.js', ['js']);
     gulp.watch('app/img/**/*', ['img']);
     gulp.watch('bower.json', ['wiredep']);
+});
+
+gulp.task("webpack:build", ['css', 'js'], function(callback) {
+
+	// modify some webpack config options
+	var myConfig = Object.create(webpackConfig);
+
+	// run webpack
+	webpack(myConfig, function(err, stats) {
+		if(err) throw new gutil.PluginError("webpack:build", err);
+		gutil.log("[webpack:build]", stats.toString({
+			colors: true
+		}));
+		callback();
+	});
 });
