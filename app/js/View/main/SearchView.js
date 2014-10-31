@@ -101,7 +101,8 @@ module.exports = Backbone.Marionette.CompositeView.extend({
 //			mimeType: '',
 			beforeSend: function(XMLHttpRequest){
 				// アクセストークンをヘッダーにセットする必要がある.
-				var header = 'Bearer ' + localStorage.getItem('accessToken');
+				var tokenResult = JSON.parse(localStorage.getItem('tokenResult'));
+				var header = 'Bearer ' + tokenResult.access_token;
 				XMLHttpRequest.setRequestHeader('Authorization', header);
 			},
 		});
