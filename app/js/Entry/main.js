@@ -3,21 +3,23 @@ var Backbone = require('backbone');
 require('marionette');
 require('stickit');
 
-var UserList = require('../Collection/UserCollection');
-var SearchView  = require('../View/main/SearchView');
+var BodyLayout = require('../View/BodyLayout');
+var ContentLayout = require('../View/main/ContentLayout');
 
 // アプリクラス.
 var app = new Backbone.Marionette.Application();
 
 app.addRegions({
-  filterRegion: '#filter',
+  bodyRegion: '#body',
 });
 
 app.addInitializer(function(/* options */){
 	'use strict';
 
-	// 検索部をrender.
-	app.filterRegion.show(new SearchView({collection: new UserList({})}));
+	var bodyLayout = new BodyLayout();
+	app.bodyRegion.attachView(bodyLayout);
+
+	app.bodyRegion.currentView.contentRegion.show(new ContentLayout());
 });
 
 app.on('start', function(/* options */){

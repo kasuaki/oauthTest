@@ -13,7 +13,7 @@ module.exports = Backbone.Marionette.CompositeView.extend({
 
 	itemView: TableItemView,
 //	itemViewOptions : function () {		'use strict';	},
-    itemViewContainer: '#body',
+	itemViewContainer: '#body',
 
 	template: '#SearchViewTemplate',
 	templateHelpers: function() {
