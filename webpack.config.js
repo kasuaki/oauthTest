@@ -54,6 +54,7 @@ module.exports = {
 	],
 
     entry: {
+    	login: './app/js/Entry/login.js',
     	main: './app/js/Entry/main.js',
     	sub: './app/js/Entry/sub.js',
     },

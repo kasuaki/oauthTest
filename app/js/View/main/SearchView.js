@@ -111,7 +111,7 @@ module.exports = Backbone.Marionette.CompositeView.extend({
 	onClickSubButton: function() {
 		'use strict';
 
-		location.href = '/main/sub';
+		Utility.locationHref('/main/sub');
 	},
 
 	onClickAddButton: function() {

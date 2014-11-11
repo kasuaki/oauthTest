@@ -1,8 +1,10 @@
 
+var Utility = require('../Utility/Utility');
+
 $(function(){
 	'use strict';
 
 	$('#mainButton').on('click', function() {
-		location.href = '/main/index';
+		Utility.locationHref('/main/index');
 	});
 });
