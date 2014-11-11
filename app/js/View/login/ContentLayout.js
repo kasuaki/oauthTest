@@ -81,7 +81,7 @@ module.exports = Backbone.Marionette.Layout.extend({
 
 		// templateを追加.
 		var html = require('./template/ContentTemplate.html');
-		$('body').append(html);
+		Utility.addTemplate(html, 'ContentTemplate');
 
 		$.ajaxSetup({
 			cache: false,
@@ -94,7 +94,7 @@ module.exports = Backbone.Marionette.Layout.extend({
 				// アクセストークンをヘッダーにセットする必要がある.
 				var tokenResult = JSON.parse(localStorage.getItem('tokenResult'));
 				if (tokenResult !== null) {
-					var header = 'Bearer ' + tokenResult.access_token;
+					var header = 'Bearer ' + tokenResult.accessToken;
 					XMLHttpRequest.setRequestHeader('Authorization', header);
 				}
 			},

@@ -2,6 +2,8 @@
 var Backbone = require('backbone');
 require('marionette');
 
+var Utility = require('../../Utility/Utility');
+
 var User = require('../../Model/User');
 
 module.exports = Backbone.Marionette.ItemView.extend({
@@ -33,7 +35,7 @@ module.exports = Backbone.Marionette.ItemView.extend({
 
 		// templateを追加.
 		var html = require('./template/ItemViewTemplate.html');
-		$('body').append(html);
+		Utility.addTemplate(html, 'ItemViewTemplate');
 	},
 
 	// View がレンダリングされた後に呼ばれるメソッド。

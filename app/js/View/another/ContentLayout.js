@@ -1,10 +1,8 @@
+
 var Backbone = require('backbone');
 require('marionette');
 
 var Utility = require('../../Utility/Utility');
-
-var UserList = require('../../Collection/UserCollection');
-var SearchView  = require('./SearchView');
 
 // Content部.
 module.exports = Backbone.Marionette.Layout.extend({
@@ -16,13 +14,19 @@ module.exports = Backbone.Marionette.Layout.extend({
 	},
 
 	ui: {
-		filter: '#filter'
+		mainButton: '#main',
 	},
 	regions: {
-		filterRegion: '#filter'
 	},
 
 	events: {
+		'click @ui.mainButton': 'onClickMainButton',
+	},
+
+	onClickMainButton: function() {
+		'use strict';
+
+		Utility.locationHref('/main/index');
 	},
 
 	initialize: function(/* options */) {
@@ -42,8 +46,10 @@ module.exports = Backbone.Marionette.Layout.extend({
 			beforeSend: function(XMLHttpRequest){
 				// アクセストークンをヘッダーにセットする必要がある.
 				var tokenResult = JSON.parse(localStorage.getItem('tokenResult'));
-				var header = 'Bearer ' + tokenResult.accessToken;
-				XMLHttpRequest.setRequestHeader('Authorization', header);
+				if (tokenResult !== null) {
+					var header = 'Bearer ' + tokenResult.accessToken;
+					XMLHttpRequest.setRequestHeader('Authorization', header);
+				}
 			},
 		});
 	},
@@ -51,11 +57,6 @@ module.exports = Backbone.Marionette.Layout.extend({
 	// View がレンダリングされて画面に表示された後に呼ばれるメソッド。
 	onShow: function() {
 		'use strict';
-
-		var searchView = new SearchView({collection: new UserList({})});
-
-		// 検索部をrender.
-		this.filterRegion.show(searchView);
 
 		// Get rid of that pesky wrapping-div.
 		// Assumes 1 child element present in template.
@@ -65,5 +66,7 @@ module.exports = Backbone.Marionette.Layout.extend({
 		this.$el.unwrap();
 		this.setElement(this.$el);
 		this.bindUIElements();
+
+		$('#main').on('click', this.onClickMainButton);
 	},
 });

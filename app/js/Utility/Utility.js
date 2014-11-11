@@ -1,3 +1,4 @@
+/*global _ */
 /*global alert */
 
 exports.objDump = function(obj) {
@@ -14,18 +15,27 @@ exports.locationHref = function(url) {
 	'use strict';
 
 	var tokenResult = JSON.parse(localStorage.getItem('tokenResult'));
-	var access_token = tokenResult.access_token;
+	var accessToken = tokenResult.accessToken;
 
-	if (_.isString(access_token)) {
+	if (_.isString(accessToken)) {
 
 		if (url.indexOf('?') > -1) {
-			access_token = '&access_token=' + access_token;
+			accessToken = '&access_token=' + accessToken;
 		} else {
-			access_token = '?access_token=' + access_token;
+			accessToken = '?access_token=' + accessToken;
 		}
 
-		location.href = url + access_token;
+		location.href = url + accessToken;
 	} else {
-		alert('ÉAÉNÉZÉXÉgÅ[ÉNÉìÇ»Çµ');
+		alert('„Ç¢„ÇØ„Çª„Çπ„Éà„Éº„ÇØ„É≥„Å™„Åó');
 	}
-}
+};
+
+exports.addTemplate = function(html, id) {
+	'use strict';
+
+	if ($('#' + id).size() <= 0) {
+
+		$('body').append(html);
+	}
+};

@@ -33,7 +33,8 @@ module.exports = Backbone.Marionette.CompositeView.extend({
 		indexButton: '#index',
 		indexAjaxButton: '#indexAjax',
 		subButton: '#sub',
-		eventName: '#eventName',
+		anotherButton: '#another',
+		eventDiv: '#eventName',
 	},
 	events: {
 		'click @ui.addButton': 'onClickAddButton',
@@ -47,6 +48,7 @@ module.exports = Backbone.Marionette.CompositeView.extend({
 		'click @ui.indexButton': 'onClickIndexButton',
 		'click @ui.indexAjaxButton': 'onClickIndexAjaxButton',
 		'click @ui.subButton': 'onClickSubButton',
+		'click @ui.anotherButton': 'onClickAnotherButton',
 	},
 
 	initialize: function(/* options */) {
@@ -54,14 +56,17 @@ module.exports = Backbone.Marionette.CompositeView.extend({
 
 		// templateを追加.
 		var html = require('./template/SearchViewTemplate.html');
-		$('body').append(html);
+		Utility.addTemplate(html, 'SearchViewTemplate');
 
 		// イベント監視.
 		this.collection.on('all', _.bind(function(eventName, a, b/* , c */) {
 
 			var self = this;
-			var old = self.ui.eventName.text();
-			self.ui.eventName.text(old + ' ' + eventName);
+			var eventDiv = self.ui.eventDiv;
+			if (_.isObject(eventDiv)) {
+				var old = eventDiv.text();
+				eventDiv.text(old + ' ' + eventName);
+			}
 
 			switch(eventName) {
 				case 'error':
@@ -89,29 +94,19 @@ module.exports = Backbone.Marionette.CompositeView.extend({
 					break;
 			}
 		}, this));
+	},
 
-//		var headers = {};
+	onClickAnotherButton: function() {
+		'use strict';
 
-		$.ajaxSetup({
-			cache: false,
-			async: true,
-			dataType:'json',
-//			headers: headers,
-//			contentType : '',
-//			mimeType: '',
-			beforeSend: function(XMLHttpRequest){
-				// アクセストークンをヘッダーにセットする必要がある.
-				var tokenResult = JSON.parse(localStorage.getItem('tokenResult'));
-				var header = 'Bearer ' + tokenResult.access_token;
-				XMLHttpRequest.setRequestHeader('Authorization', header);
-			},
-		});
+		Utility.locationHref('/anothers');
 	},
 
 	onClickSubButton: function() {
 		'use strict';
 
-		Utility.locationHref('/main/sub');
+		Backbone.history.navigate('main/sub', true);
+//		location.href = '/main/sub';
 	},
 
 	onClickAddButton: function() {
@@ -314,7 +309,8 @@ module.exports = Backbone.Marionette.CompositeView.extend({
 		this.setElement(this.$el);
 
 		this.collection.fetch();
-		
+
 		$('#sub').on('click', this.onClickSubButton);
+		$('#another').on('click', this.onClickAnotherButton);
 	},
 });
