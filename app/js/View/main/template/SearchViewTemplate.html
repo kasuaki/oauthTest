@@ -1,35 +1,30 @@
 <script id="SearchViewTemplate" type="text/template">
-	<input type="button" id="sub" value="sub" />
-	<input type="button" id="another" value="another" />
-	<table>
-	<tbody>
-	<tr>
-	<td><input type="button" id="add" value="add" /></td>
-	<td><input type="button" id="addAjax" value="addAjax" /></td>
-	</tr>
-	<tr>
-	<td><input type="button" id="edit" value="edit" /></td>
-	<td><input type="button" id="editAjax" value="editAjax" /></td>
-	</tr>
-	<tr>
-	<td><input type="button" id="delete" value="delete" /></td>
-	<td><input type="button" id="deleteAjax" value="deleteAjax" /></td>
-	</tr>
-	<tr>
-	<td><input type="button" id="view" value="view" />
-	<td><input type="button" id="viewAjax" value="viewAjax" />
-	</tr>
-	<tr>
-	<td><input type="button" id="index" value="index" />
-	<td><input type="button" id="indexAjax" value="indexAjax" />
-	</tr>
-	</tbody>
-	</table>
+	<div class="row">
+		<div class="col-lg-5"><input class="btn btn-primary btn-block" type="button" id="sub" value="sub" /></div>
+		<div class="col-lg-5"><input class="btn btn-primary btn-block" type="button" id="another" value="another" /></div>
+	</div>
+	<div class="row">
+		<div class="col-lg-5"><input class="btn btn-primary btn-block" type="button" id="add" value="add" /></div>
+		<div class="col-lg-5"><input class="btn btn-primary btn-block" type="button" id="addAjax" value="addAjax" /></div>
+	</div>
+	<div class="row">
+		<div class="col-lg-5"><input class="btn btn-primary btn-block" type="button" id="edit" value="edit" /></div>
+		<div class="col-lg-5"><input class="btn btn-primary btn-block" type="button" id="editAjax" value="editAjax" /></div>
+	</div>
+	<div class="row">
+		<div class="col-lg-5"><input class="btn btn-primary btn-block" type="button" id="delete" value="delete" /></div>
+		<div class="col-lg-5"><input class="btn btn-primary btn-block" type="button" id="deleteAjax" value="deleteAjax" /></div>
+	</div>
+	<div class="row">
+		<div class="col-lg-5"><input class="btn btn-primary btn-block" type="button" id="view" value="view" /></div>
+		<div class="col-lg-5"><input class="btn btn-primary btn-block" type="button" id="viewAjax" value="viewAjax" /></div>
+	</div>
+	<div class="row">
+		<div class="col-lg-5"><input class="btn btn-primary btn-block" type="button" id="index" value="index" /></div>
+		<div class="col-lg-5"><input class="btn btn-primary btn-block" type="button" id="indexAjax" value="indexAjax" /></div>
+	</div>
 	<div id="eventName"></div>
-	<table>
-	<thead>
-	</thead>
-	<tbody id="body">
-	</tbody>
+	<table class="table table-striped table-bordered">
+		<tbody id="body"></tbody>
 	</table>
 </script>
