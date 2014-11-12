@@ -63,7 +63,8 @@ module.exports = Backbone.Marionette.Layout.extend({
 			if (json.result === 'success') {
 				localStorage.setItem('tokenResult', JSON.stringify(json));
 
-				Utility.locationHref('/main/index');
+				var tokenResult = JSON.parse(localStorage.getItem('tokenResult'));
+				Utility.locationHref(tokenResult.url);
 			} else {
 
 				alert('loginに失敗');
