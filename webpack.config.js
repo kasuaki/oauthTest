@@ -21,6 +21,7 @@ var providePlugin = new webpack.ProvidePlugin({
 	$: 'jquery',
 	'_': 'underscore',
 	'Backbone': 'backbone',
+	'Bootstrap': 'bootstrap',
 	'Backbone.Marionette': [path.join(__dirname, 'app/bower_components/backbone.marionette')],
 	'Backbone.Stickit': 'stickit',
 	'Backbone.Babysitter': 'backbone.babysitter',
