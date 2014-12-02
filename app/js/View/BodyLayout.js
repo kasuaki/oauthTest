@@ -1,6 +1,7 @@
 
 var Backbone = require('backbone');
 require('marionette');
+var Header = require('./HeaderLayout');
 
 // 検索View.
 module.exports = Backbone.Marionette.Layout.extend({
@@ -27,5 +28,6 @@ module.exports = Backbone.Marionette.Layout.extend({
 		'use strict';
 
 		this.bindUIElements();
+		this.headerRegion.show(new Header());
 	}
 });
