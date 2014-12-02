@@ -1,29 +1,90 @@
 'use strict';
 // generated on 2014-10-29 using generator-gulp-webapp 0.1.0
 
-var gulp = require('gulp');
+var gulp          = require('gulp');
+var glob          = require('glob');
+var path          = require('path');
+var flatten       = require('flatten');
+var concat        = require('gulp-concat');
+//var uglify        = require('uglify');
+var less          = require('gulp-less');
+var sass          = require('gulp-ruby-sass')
+var cssimport     = require('gulp-cssimport');
+var minifyCss     = require('gulp-minify-css');
+var streamqueue   = require('streamqueue');
+var debug         = require('gulp-debug');
+var autoprefix    = require('gulp-autoprefixer')
+var notify        = require('gulp-notify')
+var bower         = require('gulp-bower');
+var gutil         = require("gulp-util");
+var webpack       = require("webpack");
+var webpackConfig = require("./webpack.config.js");
+
 
 // load plugins
 var $ = require('gulp-load-plugins')();
 
-var path = require('path');
-var gutil = require("gulp-util");
-var webpack = require("webpack");
-var webpackConfig = require("./webpack.config.js");
-
 require('./js-minify.js')(gulp);
 require('./css-minify.js')(gulp);
 
-gulp.task('css', function () {
-    return gulp.src('app/css/cake.generic.scss')
-        .pipe($.rubySass({
-            style: 'expanded',
-            precision: 10
-        }))
-        .pipe($.autoprefixer('last 1 version'))
-        .pipe(gulp.dest('.tmp/css'))
+
+var config = {
+    sassPath: './app/css/',
+    bowerDir: './app/bower_components/',
+    fontPath: '../cakephp-2.5.5/app/webroot/fonts/',
+    cssPath: '../cakephp-2.5.5/app/webroot/css/',
+}
+
+gulp.task('bower', function() {
+
+    return bower()
+        .pipe(gulp.dest(config.bowerDir))
         .pipe($.size());
 });
+
+gulp.task('icons', function() {
+
+    return gulp.src(config.bowerDir + 'fontawesome/fonts/**.*')
+//        .pipe(debug({verbose: true}))
+        .pipe(gulp.dest(config.fontPath));
+});
+
+gulp.task('css', function() {
+
+    return gulp.src([
+//    config.sassPath + 'cake.generic.scss'
+                config.bowerDir + 'bootstrap-sass-official/vendor/assets/stylesheets/**/*.scss',
+                config.bowerDir + 'fontawesome/scss/**/*.scss',
+    ])
+        .pipe(sass({
+            style: 'compressed',
+//            loadPath: [
+//                './resources/sass',
+//                config.bowerDir + 'bootstrap-sass-official/vender/assets/stylesheets',
+//                config.bowerDir + 'fontawesome/scss',
+//            ]
+        })
+            .on("error", notify.onError(function (error) {
+                return "Error: " + error.message;
+            })))
+        .pipe(autoprefix('last 2 version'))
+//        .pipe(flatten())
+//        .pipe(concat())
+//        .pipe(uglify())
+        .pipe(gulp.dest(config.cssPath))
+        .pipe($.size());
+});
+
+//gulp.task('css', function () {
+//    gulp.src(['./app/**/*.scss'])
+//        .pipe($.rubySass({
+//            style: 'expanded',
+//            precision: 10
+//        }))
+//        .pipe($.autoprefixer('last 1 version'))
+//        .pipe(gulp.dest('.tmp/css/'))
+//        .pipe($.size());
+//});
 
 gulp.task('js', function () {
     return gulp.src('app/js/**/*.js')
@@ -57,13 +118,13 @@ gulp.task('img', function () {
         .pipe($.size());
 });
 
-gulp.task('fonts', function () {
-    return gulp.src(require('main-bower-files')().concat('app/fonts/**/*'))
-        .pipe($.filter('**/*.{eot,svg,ttf,woff}'))
-        .pipe($.flatten())
-        .pipe(gulp.dest('dist/fonts'))
-        .pipe($.size());
-});
+//gulp.task('fonts', function () {
+//    return gulp.src(require('main-bower-files')().concat('app/fonts/**/*'))
+//        .pipe($.filter('**/*.{eot,svg,ttf,woff}'))
+//        .pipe($.flatten())
+//        .pipe(gulp.dest('dist/fonts'))
+//        .pipe($.size());
+//});
 
 gulp.task('extras', function () {
     return gulp.src(['app/*.*', '!app/*.html'], { dot: true })
@@ -74,7 +135,7 @@ gulp.task('clean', function () {
     return gulp.src(['.tmp', 'dist'], { read: false }).pipe($.clean());
 });
 
-gulp.task('build', ['webpack:build', 'img', 'fonts', 'extras']);
+gulp.task('build', ['bower', 'icons', 'css', 'webpack:build', 'img', 'extras']);
 
 gulp.task('default', ['clean'], function () {
     gulp.start('build');

@@ -1,5 +1,7 @@
 /*global _ */
 
+require('imports?jQuery=jquery!bootstrap');
+
 var Backbone = require('backbone');
 require('marionette');
 require('stickit');

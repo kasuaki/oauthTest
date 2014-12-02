@@ -16,6 +16,19 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
+// Core variables and mixins
+
+@import "variables";
+
+@import "bootstrap/mixins";
+
+
+// Reset and dependencies
+
+@import "bootstrap/normalize";
+
+@import "font-awesome";
+
 * {
 	margin:0;
 	padding:0;
