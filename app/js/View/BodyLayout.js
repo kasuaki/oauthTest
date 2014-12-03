@@ -12,13 +12,15 @@ module.exports = Backbone.Marionette.Layout.extend({
 		content: '#content',
 		container: '#container',
 		header: '#header',
-		footer: '#footer'
+		footer: '#footer',
+		sideBar: '#sideBar'
 	},
 	regions: {
 		contentRegion: '#content',
 		containerRegion: '#container',
 		headerRegion: '#header',
-		footerRegion: '#footer'
+		footerRegion: '#footer',
+		sideBarRegion: '#sideBar'
 	},
 
 	events: {

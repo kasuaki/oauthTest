@@ -13,7 +13,8 @@
     "backbone.marionette": "1.8.5",
     "pjax": "~0.1.4",
     "bootstrap": "~3.3.0",
-    "fontawesome": "~4.2.0"
+    "fontawesome": "~4.2.0",
+    "jcanvas": "~14.11.25"
   },
   "devDependencies": {}
 }
