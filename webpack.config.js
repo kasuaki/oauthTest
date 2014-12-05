@@ -45,6 +45,7 @@ module.exports = {
 		    'babysitter': [path.join(__dirname, 'app/bower_components/backbone.babysitter')],
 		    'wreqr':      [path.join(__dirname, 'app/bower_components/backbone.wreqr')],
 		    'marionette': [path.join(__dirname, 'app/bower_components/backbone.marionette/lib/backbone.marionette.js')],
+		    'gamepad':    [path.join(__dirname, 'app/sub_module/gamepad/gamepad')],
 	    }
 	},
 	plugins: [resolverPlugin,
@@ -62,14 +63,16 @@ module.exports = {
     },
     output: {
         path: '../cakephp-2.5.5/app/webroot/js',
-        filename: '[name].js'
+        filename: '[name].js',
+//        libraryTarget: "var",
     },
 
 	externals: {
         // require('jquery') is external and available
         //  on the global var jQuery
 //        'jquery': 'jQuery',
-//        'backbone': 'Backbone',
+//        './app/bower_components/backbone/backbone': 'backbone',
+//        './app/bower_components/underscore/underscore': '_',
 //        'backbone.marionette': 'Backbone.Marionette',
     },
     module: {

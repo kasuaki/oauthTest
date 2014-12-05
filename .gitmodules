@@ -1,0 +1,3 @@
+[submodule "app/sub_module/gamepad"]
+	path = app/sub_module/gamepad
+	url = https://github.com/kallaspriit/HTML5-JavaScript-Gamepad-Controller-Library.git
